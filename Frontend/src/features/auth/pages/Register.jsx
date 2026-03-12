@@ -1,7 +1,10 @@
 import React from 'react'
 import "../styles/auth.form.scss"
+import { useNavigate,Link } from 'react-router';
 
 const Register = () => {
+
+    const navigate = useNavigate();
 
     const submitHandle = (e) => {
         e.preventDefault();
@@ -30,7 +33,9 @@ const Register = () => {
 
                 <button className='button primary-button'>Register</button>
             </form>
-        </div>
+
+            <p>Already have an account? <Link to={"/login"}>Login</Link></p>
+        </div> 
     </main>
   )
 }
