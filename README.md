@@ -2,7 +2,7 @@
 
 A production-ready full-stack GenAI web application that helps users prepare for job interviews by analyzing their resume against job descriptions, detecting skill gaps, generating personalized interview questions, and creating ATS-optimized resumes.
 
->  **Work in Progress** — Authentication complete, AI integration in progress.
+>  **Work in Progress** — BUG in gemini API integration.
 
 ---
 
@@ -47,39 +47,41 @@ A production-ready full-stack GenAI web application that helps users prepare for
 GenAI/
 ├── Backend/
 │   ├── src/
-│   │   ├── controllers/       # auth.controller.js , interview.controller.js
-│   │   ├── models/            # MongoDB schemas
-│   │   │   ├── user.model.js
-│   │   │   └── blacklist.model.js
-│   │   ├── routes/            # API routes
-│   │   │   └── auth.route.js
-│   │   ├── middlewares/       # Auth middleware
-│   │   │   └── auth.middleware.js
-│   │   └── config/            # DB connection
-│   │       └── database.js
-│   ├── .env                   # Never committed
-│   ├── .env.example           # Template
+│   │   ├── controllers/                 # auth.controller.js , interview.controller.js
+│   │   ├── models/                      # user.model.js, blacklist.model.js, report.model.js
+│   │   ├── routes/                      # auth.route.js, interview.route.js
+│   │   ├── middlewares/                 # auth.middleware.js, file.middleware.js 
+│   │   ├── config/                      # database.js
+│   │   ├── services/                    # ai.service.js
+│   │   └── app.js
+│   ├── .env                             # Never committed
+│   ├── .gitignore
 │   ├── package.json
 │   └── server.js
 ├── Frontend/
 │   ├── src/
 │   │   ├── features/
-│   │   │   └── auth/
-│   │   │       ├── auth.context.jsx
-│   │   │       ├── hooks/
-│   │   │       │   └── useAuth.jsx
-│   │   │       └── services/
-│   │   │           └── auth.api.js
-│   │   ├── pages/
-│   │   │   ├── Login.jsx
-│   │   │   └── Register.jsx
-│   │   ├── styles/
-│   │   │   └── auth.form.scss
+│   │   │   ├── auth/
+│   │   │   │   ├── components           # Protected.jsx
+│   │   │   │   ├── hooks/               # useAuth.jsx
+│   │   │   │   ├── pages/               # Login.jsx, Register.jsx
+│   │   │   │   ├── styles/              # auth.form.scss
+│   │   │   │   ├── services/            # auth.api.jsx
+│   │   │   │   └── auth.context.jsx
+│   │   │   └── interview/
+│   │   │       ├── components           
+│   │   │       ├── hooks/               # useInterview.jsx
+│   │   │       ├── pages/               # Home.jsx, Interview.jsx
+│   │   │       ├── styles/              # home.scss, interview.scss
+│   │   │       ├── services/            # interview.api.jsx
+│   │   │       └── interview.context.jsx
+│   │   ├── styles/                      # button.scss
 │   │   ├── App.jsx
+│   │   ├── style.scss
 │   │   └── main.jsx
-│   ├── .env
+│   ├── index.html
 │   └── package.json
-└── .gitignore
+└── README.md
 ```
 
 ---
@@ -148,20 +150,19 @@ http://localhost:5173
 
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
-| POST | `/register` | Public | Register new user |
-| POST | `/login` | Public | Login user |
-| GET | `/logout` | Public | Logout & blacklist token |
-| GET | `/getMe` | Private | Get current user info |
+| POST | `/register` | Public | Register a new user |
+| POST | `/login` | Public | Login a user |
+| GET | `/logout` | Public | Clear auth token from cookies and blacklist it |
+| GET | `/getMe` | Private | Get details of the currently authenticated user |
 
-### AI Routes — `/api/ai`
+### Interview Routes — `/api/interview`
 
 | Method | Endpoint | Access | Description |
 |---|---|---|---|
-| POST | `/analyze-resume` | Private | Analyze resume against job description and detect skill gaps |
-| POST | `/generate-questions` | Private | Generate role-specific technical and behavioural interview questions |
-| POST | `/generate-prep-plan` | Private | Generate a personalized preparation roadmap based on detected skill gaps |
-| POST | `/generate-resume` | Private | Generate an ATS-optimized resume tailored to the job description |
-| POST | `/generate-mock-interview` | Private | Generate a mock interview session with structured questions |
+| POST | `/` | Private | Generate interview report based on candidate's resume, self description, and job description |
+| GET | `/:interviewId` | Private | Get interview report by ID |
+| GET | `/` | Private | Get all interview reports of the logged-in user |
+| GET | `/resume/pdf/:interviewReportId` | Private | Download AI-generated resume PDF for the interview report |
 
 ---
 
@@ -173,22 +174,6 @@ http://localhost:5173
 -  Protected routes via **Express middleware**
 -  CORS configured with **credentials: true**
 -  Environment variables validated on startup
-
----
-
-##  Roadmap
-
-- [x] Project setup & DB connection
-- [x] User authentication (Register, Login, Logout)
-- [x] JWT middleware & token blacklisting
-- [x] React frontend with Auth context
-- [x] Resume upload & parsing
-- [x] Job description input
-- [x] Gemini AI skill gap detection
-- [x] Interview question generation
-- [x] Personalized prep plan UI
-- [ ] ATS resume generation with Puppeteer
-- [ ] Dashboard with progress tracking
 
 ---
 
