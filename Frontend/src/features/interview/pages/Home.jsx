@@ -1,6 +1,5 @@
 import React, { useState, useRef } from 'react'
-import "../style/home.scss"
-import { useInterview } from '../hooks/useInterview.js'
+import "../styles/home.scss"
 import { useNavigate } from 'react-router'
 
 const Home = () => {

@@ -15,6 +15,20 @@ const { file } = require("zod");
 interviewRouter.post("/",authMiddleware.authUser ,upload.single("resume") ,interviewController.generateReportController)
 
 
+/**
+ * @route GET /api/interview/:interviewId
+ * @desc Get interview report by ID
+ * @access Private
+ */
+interviewRouter.get("/:interviewId", authMiddleware.authUser, interviewController.getInterviewReportByIdController)
+
+
+/**
+ * @route GET /api/interview/
+ * @desc Get all interview reports of the logged in user
+ * @access Private
+ */
+interviewRouter.get("/", authMiddleware.authUser, interviewController.getAllInterviewReportsController)  
 
 
 module.exports = interviewRouter;

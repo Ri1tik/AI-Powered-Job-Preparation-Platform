@@ -50,6 +50,7 @@ const prompt = `Generate an interview report for a candidate with the following 
     })
 
     return JSON.parse(response.text)
+    // console.log(response.text)
 }
 
 
