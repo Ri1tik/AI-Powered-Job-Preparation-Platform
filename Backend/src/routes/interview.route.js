@@ -5,7 +5,6 @@ const interviewRouter = express.Router();
 const authMiddleware = require("../middlewares/auth.middleware")
 const interviewController = require("../controllers/interview.controller")
 const upload = require("../middlewares/file.middleware");
-const { file } = require("zod");
 
 /**
  * @route POST /api/interview/generateReport

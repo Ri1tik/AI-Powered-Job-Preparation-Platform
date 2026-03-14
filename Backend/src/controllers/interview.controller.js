@@ -81,4 +81,4 @@ async function getAllInterviewReportsController(req, res) {
 
 
 
-module.exports = { generateReportController }
+module.exports = { generateReportController, getInterviewReportByIdController, getAllInterviewReportsController }
