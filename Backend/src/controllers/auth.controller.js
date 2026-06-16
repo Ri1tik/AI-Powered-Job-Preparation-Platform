@@ -56,7 +56,12 @@ async function registerUserController(req,res){
     }, process.env.JWT_SECRET,
     { expiresIn: "2d" })
     
-    res.cookie("token",token)
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 2 * 24 * 60 * 60 * 1000
+    })
 
     res.status(201).json({
         success: true,
@@ -106,7 +111,12 @@ async function loginUserController(req,res){
     }, process.env.JWT_SECRET,
     { expiresIn: "2d" })
 
-    res.cookie("token",token)
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "none",
+        maxAge: 2 * 24 * 60 * 60 * 1000
+    })
 
     res.status(200).json({
         status:true,
